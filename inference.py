@@ -29,6 +29,7 @@ from diffusers import ControlNetModel
 from contextlib import contextmanager
 from diffusers.schedulers.scheduling_euler_ancestral_discrete import EulerAncestralDiscreteScheduler
 from diffusers.schedulers.scheduling_euler_discrete import EulerDiscreteScheduler
+from RealESRGAN import RealESRGAN
 
 SCHEDULERS = {
     'EulerAncestralDiscreteScheduler': EulerAncestralDiscreteScheduler,
@@ -72,6 +73,7 @@ def parse_args():
     parser.add_argument("--autocast", type=str, default=None, choices=[
         'f16', 'bf16'
     ])
+    parser.add_argument("--upscale", type=int, default=None, choices=[2, 4])
 
     return parser.parse_args()
 
@@ -215,16 +217,46 @@ def main():
                       video_length=args.video_length,
                       generator=generator,
                       output_type="tensor", **kwargs).videos
-
+ 
     images = to_pil_images(images, output_type="pil")
-
+    
+    output_name = args.output
+    
+    filename_split = args.output.split('.')
+    
+    if args.upscale:
+        original_video = args.output + '_s'
+        if len(filename_split) > 1:
+            original_extension = args.output.split('.')[-1];
+            original_name = args.output.split('.')[0];
+            output_name = original_name + '_s.' + original_extension;
+    
     if args.video_length > 1:
-        if args.output.split(".")[-1] == "gif":
-            save_as_gif(images, args.output, duration=args.video_duration // args.video_length)
+        if filename_split[-1] == "gif":
+            save_as_gif(images, output_name, duration=args.video_duration // args.video_length)
         else:
-            save_as_mp4(images, args.output, duration=args.video_duration // args.video_length)
+            save_as_mp4(images, output_name, duration=args.video_duration // args.video_length)
     else:
-        images[0].save(args.output, format='JPEG', quality=95)
+        images[0].save(output_name, format='JPEG', quality=95)
+
+    # Upscaling with RealESRGAN
+    if args.upscale:
+        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        print('Torch device: ' + str(device)) 
+        model = RealESRGAN(device, scale=args.upscale)
+        model.load_weights(f'weights/RealESRGAN_x{str(args.upscale)}.pth', download=True)
+        print('Loaded RealESRGAN weights')
+        images_sr = []
+        for im in images:
+            sr_image = model.predict(im)
+            images_sr.append(sr_image)
+        if args.video_length > 1:
+            if filename_split[-1] == "gif":
+                save_as_gif(images_sr, args.output, duration=args.video_duration // args.video_length)
+            else:
+                save_as_mp4(images_sr, args.output, duration=args.video_duration // args.video_length)
+        else:
+            images_sr[0].save(args.output, format='JPEG', quality=95)
 
 
 if __name__ == "__main__":

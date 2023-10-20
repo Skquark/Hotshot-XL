@@ -23,7 +23,16 @@ LoRA: [vangogh.safetensors](https://civitai.com/models/157780/vangoghbrushwork-s
 
 ```
 python inference.py \
-  --prompt="gorgeous girl, princess dancing, slight smile, 1girl, wearing colorful blue opaque sunglasses, long brown hair, thick bangs, blue dress, dancing in a futuristic castle, octane render, flowers, dramatic lighting, highres, enchanting, wonderfully colored, cinematic, vibrant"    --negative_prompt="blurry, fog, teeth, eyes"    --steps=30    --seed=3058248663247638579    --width=416    --height=608    --video_length=8    --video_duration=1000    --scheduler="EulerAncestralDiscreteScheduler"  --lora="lora/samaritan.safetensors"   --gif="input/dancer1.GIF"       --control_type=depth       --controlnet_conditioning_scale=0.8       --control_guidance_start=0.0       --control_guidance_end=1.0  --output="output/1015castle_20231015-175145.mp4"
+  --prompt="gorgeous girl, princess dancing, slight smile, 1girl, wearing colorful blue opaque sunglasses, long brown hair, thick bangs, blue dress, dancing in a futuristic castle, octane render, flowers, dramatic lighting, highres, enchanting, wonderfully colored, cinematic, vibrant" \
+  --negative_prompt="blurry, fog, teeth, eyes" \
+  --steps=30 \
+  --seed=3058248663247638579  \
+  --width=416 --height=608 --video_length=8 --video_duration=1000 \
+  --scheduler="EulerAncestralDiscreteScheduler" \
+  --lora="lora/samaritan.safetensors" \
+  --gif="input/dancer1.GIF" \
+  --control_type=depth  --controlnet_conditioning_scale=0.8  --control_guidance_start=0.0  --control_guidance_end=1.0 \
+  --output="output/1015castle_20231015-175145.mp4"
 ```
 
 LoRA: [samaritan.safetensors](https://civitai.com/models/121932?modelVersionId=132727)
@@ -36,7 +45,10 @@ LoRA: [samaritan.safetensors](https://civitai.com/models/121932?modelVersionId=1
 
 ```
 python inference.py \
-  --prompt="candle on a desk in an alchemist lab, alchemy lab, books, vial with green liquid, colorful gems, decorative skull, still camera, still shot of a burning candle"    --negative_prompt="blurry, fog"    --steps=40    --seed=12240062779010287701    --width=672    --height=384    --video_length=8    --video_duration=1000    --scheduler="EulerDiscreteScheduler"    --output="output/witchc_20231012-002505.mp4"
+  --prompt="candle on a desk in an alchemist lab, alchemy lab, books, vial with green liquid, colorful gems, decorative skull, still camera, still shot of a burning candle" \
+  --negative_prompt="blurry, fog"  --steps=40  --seed=12240062779010287701 \
+  --width=672  --height=384  --video_length=8  --video_duration=1000 \
+  --scheduler="EulerDiscreteScheduler"  --output="output/witchc_20231012-002505.mp4"
 ```
 <img src="output/candle.GIF" height="360" /> 
 
@@ -52,7 +64,10 @@ python inference.py \
 
 ```
 python inference.py \
-  --prompt="lightning frog made of green lightning alone in a dark cyberpunk street, centered, still camera, beauty and aesthetics, thunder, composed of elements of thunder, thunder, electricity, glowing, glowing eyes, green theme"    --negative_prompt="blurry, fog"    --steps=40    --seed=5160677974417066473    --width=672    --height=384    --video_length=8    --video_duration=1000    --scheduler="EulerDiscreteScheduler"    --lora="lora/thunder.safetensors"  --output="output/witchc_20231012-025908.mp4"
+  --prompt="lightning frog made of green lightning alone in a dark cyberpunk street, centered, still camera, beauty and aesthetics, thunder, composed of elements of thunder, thunder, electricity, glowing, glowing eyes, green theme" \
+  --negative_prompt="blurry, fog"    --steps=40    --seed=5160677974417066473 \
+  --width=672    --height=384    --video_length=8    --video_duration=1000 \
+  --scheduler="EulerDiscreteScheduler"    --lora="lora/thunder.safetensors"  --output="output/witchc_20231012-025908.mp4"
 ```
 LoRA: [thunder.safetensors](https://civitai.com/models/152849?modelVersionId=171103)
 

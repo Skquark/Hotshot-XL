@@ -168,7 +168,7 @@ def main():
         del unet_3d
         del temporal_layers
 
-    pipe = PipelineClass.from_pretrained(args.pretrained_path, use_safetensors=True, **pipe_line_args).to(device)
+    pipe = PipelineClass.from_pretrained(args.pretrained_path, **pipe_line_args).to(device)
 
     if args.lora:
         pipe.load_lora_weights(args.lora)
